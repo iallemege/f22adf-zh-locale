@@ -1,0 +1,34 @@
+F-22 ADF 简体中文本地化说明
+适用于 Steam 2026 版（app 3146140）。游戏目录：本文件夹的上一级。
+
+已汉化（可正常显示）
+- 界面 GDD：选项、训练/巡航/快速作战/多人/ACMI/预警机/讲评的按钮、标题、悬停提示
+- 座舱 HINTTEXT（huddle\f22.ins）
+- 界面字体：WINFONTS\zh_ui.ttf + DEFINE_SYS_FONT STYLE "SimHei"
+
+GDI 包装（简报/任务名中文）
+游戏根目录的 DINPUT8.dll 是 DirectInput 代理：拦 GBK 解码（含 C2/C3 与西欧 UTF-8 冲突的字），按两格宽度把汉字贴进 2026 版覆盖层。
+简报正文与任务目录已写成 GBK。启动后游戏目录应出现 gdi_zh.log。
+关掉包装：删掉游戏根目录的 DINPUT8.dll。
+完整中文简报图片仍在 locale_zh\briefing_cards\index.html。
+左侧任务缩略图底部烧了中文标题（原图在 en_backup\pcx\）。
+exe 里写死的英文（如 MISSION OBJECTIVES）不会变。
+
+其它未汉化
+- 主菜单（字画在 PCX 上）
+- icondesc.txt 点阵按钮 BRIEFING / OK
+- 机内字幕与语音（在 adf.exe / 语音包里）
+- 帮助 CHM、PDF、按键对照
+- options.cfg 的 FEATURE 名称（查找键，译了会启动报错）
+
+字体
+CREATE_SYS_FONT 最多 3 行。正确为：
+  CREATE_SYS_FONT "winfonts\zh_ui.ttf"
+  CREATE_SYS_FONT "winfonts\zh_ui.ttf"
+  CREATE_SYS_FONT "winfonts\UAV-OSD-Sans-Mono.ttf"
+  DEFINE_SYS_FONT ... STYLE "SimHei"
+
+还原全部英文
+  python restore_english.py
+只还原简报/目录为英文（保留界面中文）
+  python restore_overlay_en.py

@@ -1,0 +1,89 @@
+F-22: Air Dominance Fighter 简体中文术语表
+编码：游戏内文本为 GBK（代码页 936）。本文件为 UTF-8，供译者对照，不要拷进游戏目录当数据用。
+
+原则
+- 北约武器与飞机型号保持原文：AIM-9X、AIM-120C、AIM-120R、AGM-88 HARM、AGM-65 Maverick、AGM-84 Harpoon、GBU、JDAM、JSOW、Mk20、LAU-68、F-15E、Tornado、F-22 等。
+- 首次出现的任务缩写给出中文全称并括注原文，后文可单独用缩写。
+- 地名用通行译名，不自造。
+- 座舱显示、模态、电磁状态用航空习惯用语，不用游戏黑话。
+
+任务与战术
+CAP          战斗空中巡逻（CAP）
+SEAD         压制敌防空（SEAD）
+BAI          战场遮断（BAI）
+CAS          近距空中支援（CAS）
+HVA          高价值目标（HVA）
+ABCCC        空中战场指挥控制（ABCCC）
+BVR          视距外
+ACM          近距空战 / 空战机动
+RoE          交战规则
+EMCON        电磁控制
+IRST         红外搜索跟踪
+AWACS        预警机
+JSTARS       联合星
+LANTIRN      LANTIRN（低空导航与红外瞄准吊舱，型号保留）
+NTIDS        北约目标识别符号（NTIDS）
+DTINS        交互目标符号（DTINS）
+FEBA         战斗前沿（FEBA）
+kill box     杀伤盒
+interdiction 遮断
+fighter sweep 歼击机清场
+scramble     紧急起飞
+pickle       投放
+wingman      僚机
+stealth      隐身
+Vis-Ident    目视识别
+Eyeball/Shooter 目视识别与射击手
+Tour of Duty 战区巡航
+Quick Combat 快速作战
+time warp    时间跳跃 / 时间加速（按界面上下文）
+
+飞机与传感器（界面）
+HUD          平显
+MFD          多功能显示器
+ILS          仪表着陆系统
+chaff        箔条
+flare        红外诱饵
+bay doors    武器舱门
+military power 全军用推力
+ACMI         ACMI（空战机动仪表记录，保留缩写）
+
+地名（红海战区）
+Ar Rub al Khali     鲁卜哈利沙漠（空白地带）
+Harrat al Kishb     基什布熔岩原
+Riyadh              利雅得
+Sana'a / Sanaa      萨那
+Jizan / Jizan       吉赞
+Khamis Mushait      海米斯穆谢特
+Ash Sharurah        阿什沙劳拉
+Taif                塔伊夫
+Luxor               卢克索
+Bab el Mandeb       曼德海峡
+Khartoum            喀土穆
+Lake Tana           塔纳湖
+Eritrea             厄立特里亚
+Yemen               也门
+Sudan               苏丹
+Ethiopia            埃塞俄比亚
+
+武器习惯译名（首次可用，型号仍保留原文）
+Sidewinder     响尾蛇
+AMRAAM         AMRAAM
+Maverick       小牛
+Harpoon        捕鲸叉
+HARM           反辐射导弹（HARM）
+JDAM           联合直接攻击弹药
+LGB            激光制导炸弹
+cluster        集束弹药
+Scud           飞毛腿
+
+界面用语
+OK             确定
+Cancel         取消
+Debrief        讲评
+Briefing       简报
+Planner        任务规划
+Difficulty     简单 / 中等 / 困难
+Map Controls   控制器校准（原版按钮名；实际打开操纵杆校准）
+Quick Draw MFDs 快速调出多功能显示器
+G EFFECTS      过载视效（黑视/红视）

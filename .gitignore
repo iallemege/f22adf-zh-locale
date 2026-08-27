@@ -1,0 +1,13 @@
+en_backup/
+briefing_cards/
+__pycache__/
+*.pyc
+.DS_Store
+gdi_zh/tcc/
+gdi_zh/tcc_dl/
+gdi_zh/*.obj
+gdi_zh/*.exp
+gdi_zh/*.lib
+gdi_zh/DINPUT8_imp.def
+_*.py
+_*.txt
