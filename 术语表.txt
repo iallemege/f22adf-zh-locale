@@ -1,5 +1,6 @@
 F-22: Air Dominance Fighter 简体中文术语表
 编码：游戏内文本为 GBK（代码页 936）。本文件为 UTF-8，供译者对照，不要拷进游戏目录当数据用。
+手册译文另遵 `manuals/dcs_style.md`（对齐 DCS 中文飞行手册的告警等级与驾驶舱用词）。
 
 原则
 - 北约武器与飞机型号保持原文：AIM-9X、AIM-120C、AIM-120R、AGM-88 HARM、AGM-65 Maverick、AGM-84 Harpoon、GBU、JDAM、JSOW、Mk20、LAU-68、F-15E、Tornado、F-22 等。
@@ -76,6 +77,33 @@ JDAM           联合直接攻击弹药
 LGB            激光制导炸弹
 cluster        集束弹药
 Scud           飞毛腿
+
+手册用语（对齐 DCS 中文飞行手册；界面可更短）
+cockpit        驾驶舱（界面选项仍可用「座舱」）
+stick          驾驶杆
+throttle       油门
+HUD            平视显示器（HUD）
+HMD            头盔显示器（HMD）
+MFD            多功能显示器（MFD）
+waypoint       航路点
+autopilot      自动驾驶仪
+landing gear   起落架
+airbrake       减速板
+canopy         座舱盖
+jettison       抛离
+padlock        视觉锁定（padlock）
+shoot list     射击清单
+RHAW           雷达寻的告警（RHAW）
+MAW            导弹逼近告警（MAW）
+IFDL           编队内数据链（IFDL）
+WARNING        警告
+CAUTION        注意
+NOTE           注
+Advisory       提示
+indicated airspeed 指示空速
+pitch ladder   俯仰梯
+velocity vector 速度矢量
+military power 全军用推力
 
 界面用语
 OK             确定

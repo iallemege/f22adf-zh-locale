@@ -42,14 +42,16 @@ TCC 会给 `DirectInput8Create` 加上 stdcall 修饰名，`fix_export.py` 会�
 - 界面 GDD（按钮、标题、悬停提示）
 - 座舱 HINTTEXT
 - 简报正文、任务目录名（GBK + `DINPUT8.dll`）
-- 术语见 `术语表.txt`
+- 术语见 `术语表.txt`（手册用词另见 `manuals/dcs_style.md`）
+- 汉化教程：`汉化教程.md`（GDI / GBK / 覆盖层解码 / DINPUT8）
+- 中文手册：`manuals\` 下的 Markdown 源，生成 `F-22 ADF 飞行手册 中文.pdf` 与 `F-22 ADF 按键对照 中文.pdf`（体例对齐 DCS 中文飞行手册）
 
 ## 仍是英文
 
 - 主菜单 PCX 上的字
 - `icondesc.txt` 点阵按钮
 - `adf.exe` 里写死的句子（如 `MISSION OBJECTIVES`）
-- 机内字幕与语音、帮助 CHM/PDF
+- 机内字幕与语音、帮助 CHM（飞行手册与按键对照已另出中文 PDF）
 
 ## 还原
 

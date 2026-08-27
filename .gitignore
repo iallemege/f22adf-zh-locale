@@ -11,3 +11,6 @@ gdi_zh/*.lib
 gdi_zh/DINPUT8_imp.def
 _*.py
 _*.txt
+manual_src/*.txt
+manual_src/chapters/
+manuals/flight_manual_zh.md

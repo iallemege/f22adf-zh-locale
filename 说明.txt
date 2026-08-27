@@ -18,7 +18,7 @@ exe 里写死的英文（如 MISSION OBJECTIVES）不会变。
 - 主菜单（字画在 PCX 上）
 - icondesc.txt 点阵按钮 BRIEFING / OK
 - 机内字幕与语音（在 adf.exe / 语音包里）
-- 帮助 CHM、PDF、按键对照
+- 帮助 CHM（PDF 与按键对照已另出中文译本，见 manuals\ 与游戏根目录）
 - options.cfg 的 FEATURE 名称（查找键，译了会启动报错）
 
 字体
