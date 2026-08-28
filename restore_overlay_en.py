@@ -3,13 +3,12 @@
 from __future__ import print_function
 import os, shutil
 
-GAME = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BACKUP = os.path.join(os.path.dirname(os.path.abspath(__file__)), "en_backup")
+import apply_ui
 
 
 def copy_tree(rel):
-    src = os.path.join(BACKUP, rel)
-    dst = os.path.join(GAME, rel)
+    src = os.path.join(apply_ui.BACKUP, rel)
+    dst = os.path.join(apply_ui.GAME, rel)
     if os.path.isfile(src):
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         shutil.copy2(src, dst)
@@ -22,8 +21,8 @@ def copy_tree(rel):
     for dirpath, _, files in os.walk(src):
         for fn in files:
             s = os.path.join(dirpath, fn)
-            r = os.path.relpath(s, BACKUP)
-            d = os.path.join(GAME, r)
+            r = os.path.relpath(s, apply_ui.BACKUP)
+            d = os.path.join(apply_ui.GAME, r)
             os.makedirs(os.path.dirname(d), exist_ok=True)
             shutil.copy2(s, d)
             n += 1

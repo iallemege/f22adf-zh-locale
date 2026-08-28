@@ -8,6 +8,9 @@
 #ifndef CP_ACP
 #define CP_ACP 0
 #endif
+#ifndef CP_UTF8
+#define CP_UTF8 65001
+#endif
 
 int WINAPI MultiByteToWideChar(UINT CodePage, DWORD dwFlags, LPCSTR lpMultiByteStr, int cbMultiByte,
                                LPWSTR lpWideCharStr, int cchWideChar);
@@ -35,6 +38,7 @@ typedef struct {
 
 static DcState g_st[16];
 static CRITICAL_SECTION g_cs;
+static void log_line(const char *s);
 
 static int is_lead(unsigned char b) { return b >= 0x81 && b <= 0xFE; }
 static int is_trail(unsigned char b) {
@@ -87,6 +91,108 @@ static wchar_t *to_wide(UINT cp, LPCSTR s, int n, int *out_n) {
     return w;
 }
 
+/* Menu / load-bar labels. Draw-time only so TITLE lookups stay English. UTF-8 bytes. */
+static const struct {
+    const char *en;
+    const char *zh;
+} g_ui[] = {
+    {"Simulator", "\xE6\xA8\xA1\xE6\x8B\x9F\xE8\xAE\xAD\xE7\xBB\x83"},
+    {"Tour of Duty", "\xE6\x88\x98\xE5\x8C\xBA\xE5\xB7\xA1\xE8\x88\xAA"},
+    {"Quick Combat", "\xE5\xBF\xAB\xE9\x80\x9F\xE4\xBD\x9C\xE6\x88\x98"},
+    {"Multiplay", "\xE5\xA4\x9A\xE4\xBA\xBA\xE6\xB8\xB8\xE6\x88\x8F"},
+    {"Multiplayer", "\xE5\xA4\x9A\xE4\xBA\xBA\xE6\xB8\xB8\xE6\x88\x8F"},
+    {"Options", "\xE9\x80\x89\xE9\xA1\xB9"},
+    {"F-22 Credits", "\xE5\x88\xB6\xE4\xBD\x9C\xE4\xBA\xBA\xE5\x91\x98"},
+    {"F22 Credits", "\xE5\x88\xB6\xE4\xBD\x9C\xE4\xBA\xBA\xE5\x91\x98"},
+    {"Credits", "\xE5\x88\xB6\xE4\xBD\x9C\xE4\xBA\xBA\xE5\x91\x98"},
+    {"Quit", "\xE9\x80\x80\xE5\x87\xBA"},
+    {"Help", "\xE5\xB8\xAE\xE5\x8A\xA9"},
+    {"F-22 Demo", "\xE6\xBC\x94\xE7\xA4\xBA"},
+    {"F22 Demo", "\xE6\xBC\x94\xE7\xA4\xBA"},
+    {"LOADING TERRAIN", "\xE8\xBD\xBD\xE5\x85\xA5\xE5\x9C\xB0\xE5\xBD\xA2"},
+    {"LOADING WEAPONS", "\xE8\xBD\xBD\xE5\x85\xA5\xE6\xAD\xA6\xE5\x99\xA8"},
+    {"LOADING SPEECH", "\xE8\xBD\xBD\xE5\x85\xA5\xE8\xAF\xAD\xE9\x9F\xB3"},
+    {"LOADING SFX", "\xE8\xBD\xBD\xE5\x85\xA5\xE9\x9F\xB3\xE6\x95\x88"},
+    {"LOADING RECORDING", "\xE8\xBD\xBD\xE5\x85\xA5\xE8\xAE\xB0\xE5\xBD\x95"},
+    {"LOADING COCKPIT VOICE", "\xE8\xBD\xBD\xE5\x85\xA5\xE5\xBA\xA7\xE8\x88\xB1\xE8\xAF\xAD\xE9\x9F\xB3"},
+    {"LOADING CLOUD LEVELS", "\xE8\xBD\xBD\xE5\x85\xA5\xE4\xBA\x91\xE5\xB1\x82"},
+    {" (Loading)", " (\xE8\xBD\xBD\xE5\x85\xA5\xE4\xB8\xAD)"},
+    {"OK", "\xE7\xA1\xAE\xE5\xAE\x9A"},
+    {"Cancel", "\xE5\x8F\x96\xE6\xB6\x88"},
+    {"Accept", "\xE6\x8E\xA5\xE5\x8F\x97"},
+    {"Free Flight", "\xE8\x87\xAA\xE7\x94\xB1\xE9\xA3\x9E\xE8\xA1\x8C"},
+    {"Flight Training", "\xE9\xA3\x9E\xE8\xA1\x8C\xE8\xAE\xAD\xE7\xBB\x83"},
+    {"Flight", "\xE9\xA3\x9E\xE8\xA1\x8C\xE8\xAE\xAD\xE7\xBB\x83"},
+    {"Weapons", "\xE6\xAD\xA6\xE5\x99\xA8\xE8\xAE\xAD\xE7\xBB\x83"},
+    {"Combat Tactics", "\xE6\x88\x98\xE6\x96\x97\xE6\x88\x98\xE6\x9C\xAF"},
+    {"Combat Manouvres", "\xE6\x88\x98\xE6\x96\x97\xE6\x9C\xBA\xE5\x8A\xA8"},
+    {"Training Program", "\xE8\xAE\xAD\xE7\xBB\x83\xE5\xA4\xA7\xE7\xBA\xB2"},
+    {"Training Missions", "\xE8\xAE\xAD\xE7\xBB\x83\xE4\xBB\xBB\xE5\x8A\xA1"},
+    {NULL, NULL},
+};
+
+static wchar_t *lookup_ui(LPCSTR str, int n, int *wn) {
+    char buf[96];
+    char utf[128];
+    int i, pre;
+    if (!str || n <= 0 || n >= (int)sizeof(buf))
+        return NULL;
+    memcpy(buf, str, n);
+    buf[n] = 0;
+    for (i = 0; g_ui[i].en; i++) {
+        if (lstrcmpA(buf, g_ui[i].en) == 0)
+            return to_wide(CP_UTF8, g_ui[i].zh, lstrlenA(g_ui[i].zh), wn);
+    }
+    if (n >= 10 && memcmp(buf + n - 10, " - LOADING", 10) == 0) {
+        pre = n - 10;
+        if (pre > 80)
+            return NULL;
+        memcpy(utf, buf, pre);
+        utf[pre] = 0;
+        lstrcatA(utf, " - \xE8\xBD\xBD\xE5\x85\xA5\xE4\xB8\xAD");
+        return to_wide(CP_UTF8, utf, lstrlenA(utf), wn);
+    }
+    return NULL;
+}
+
+static void patch_cstr_gbk(BYTE *base, DWORD size, const char *en, const char *gbk) {
+    DWORD i;
+    size_t lo = lstrlenA(en);
+    size_t ln = lstrlenA(gbk);
+    DWORD prot;
+    if (!base || ln > lo || lo < 4)
+        return;
+    for (i = 0; i + lo < size; i++) {
+        if (base[i] == (BYTE)en[0] && memcmp(base + i, en, lo) == 0 && base[i + lo] == 0) {
+            if (VirtualProtect(base + i, (DWORD)(lo + 1), PAGE_EXECUTE_READWRITE, &prot)) {
+                memcpy(base + i, gbk, ln + 1);
+                VirtualProtect(base + i, (DWORD)(lo + 1), prot, &prot);
+            }
+        }
+    }
+}
+
+static void patch_loading_strings(void) {
+    BYTE *base = (BYTE *)GetModuleHandleA(NULL);
+    IMAGE_NT_HEADERS *nt;
+    DWORD size;
+    if (!base)
+        return;
+    nt = (IMAGE_NT_HEADERS *)(base + ((IMAGE_DOS_HEADER *)base)->e_lfanew);
+    size = nt->OptionalHeader.SizeOfImage;
+    /* GBK, shorter than English. Overlay walker + GDI hook both understand it. */
+    patch_cstr_gbk(base, size, "LOADING TERRAIN", "\xD4\xD8\xC8\xEB\xB5\xD8\xD0\xCE");
+    patch_cstr_gbk(base, size, "LOADING WEAPONS", "\xD4\xD8\xC8\xEB\xCE\xE4\xC6\xF7");
+    patch_cstr_gbk(base, size, "LOADING SPEECH", "\xD4\xD8\xC8\xEB\xD3\xEF\xD2\xF4");
+    patch_cstr_gbk(base, size, "LOADING SFX", "\xD4\xD8\xC8\xEB\xD2\xF4\xD0\xA7");
+    patch_cstr_gbk(base, size, "LOADING RECORDING", "\xD4\xD8\xC8\xEB\xBC\xC7\xC2\xBC");
+    patch_cstr_gbk(base, size, "LOADING COCKPIT VOICE", "\xD4\xD8\xC8\xEB\xD7\xF9\xB2\xD5\xD3\xEF\xD2\xF4");
+    patch_cstr_gbk(base, size, "LOADING CLOUD LEVELS", "\xD4\xD8\xC8\xEB\xD4\xC6\xB2\xE3");
+    patch_cstr_gbk(base, size, "%s - LOADING", "%s - \xD4\xD8\xC8\xEB\xD6\xD0");
+    patch_cstr_gbk(base, size, " (Loading)", " (\xD4\xD8\xC8\xEB\xD6\xD0)");
+    log_line("patched loading strings");
+}
+
 static BOOL WINAPI H_ExtTextOutA(HDC hdc, int x, int y, UINT opt, const RECT *rc, LPCSTR str, UINT c,
                                  const INT *dx) {
     DcState *st;
@@ -94,9 +200,18 @@ static BOOL WINAPI H_ExtTextOutA(HDC hdc, int x, int y, UINT opt, const RECT *rc
     wchar_t wc;
     char pair[2];
     BOOL ok;
+    wchar_t *ui;
+    int wn;
 
     if (!str || c == 0)
         return pExtTextOutA(hdc, x, y, opt, rc, str, c, dx);
+
+    ui = lookup_ui(str, (int)c, &wn);
+    if (ui) {
+        ok = ExtTextOutW(hdc, x, y, opt, rc, ui, (UINT)wn, NULL);
+        HeapFree(GetProcessHeap(), 0, ui);
+        return ok;
+    }
 
     if (c >= 2 && has_gbk_pair(str, (int)c)) {
         int wn = 0;
@@ -191,6 +306,15 @@ static BOOL WINAPI H_GetCharWidth32A(HDC hdc, UINT first, UINT last, LPINT buf) 
 }
 
 static BOOL WINAPI H_GetTextExtentPoint32A(HDC hdc, LPCSTR str, int c, LPSIZE sz) {
+    if (str && c > 0) {
+        int wn = 0;
+        wchar_t *ui = lookup_ui(str, c, &wn);
+        if (ui) {
+            BOOL ok = GetTextExtentPoint32W(hdc, ui, wn, sz);
+            HeapFree(GetProcessHeap(), 0, ui);
+            return ok;
+        }
+    }
     if (str && c >= 2 && has_gbk_pair(str, c)) {
         int wn = 0;
         wchar_t *w = to_wide(936, str, c, &wn);
@@ -207,6 +331,15 @@ static int WINAPI H_DrawTextA(HDC hdc, LPCSTR str, int c, LPRECT rc, UINT fmt) {
     int n = c;
     if (str && n < 0)
         n = lstrlenA(str);
+    if (str && n > 0) {
+        int wn = 0;
+        wchar_t *ui = lookup_ui(str, n, &wn);
+        if (ui) {
+            int r = DrawTextW(hdc, ui, wn, rc, fmt);
+            HeapFree(GetProcessHeap(), 0, ui);
+            return r;
+        }
+    }
     if (str && n >= 2 && has_gbk_pair(str, n)) {
         int wn = 0;
         wchar_t *w = to_wide(936, str, n, &wn);
@@ -369,7 +502,7 @@ static void install_cjk_glyph(wchar_t wc) {
     DWORD *pd;
 
     font = g_mod ? *(BYTE **)(g_mod + RVA_FONT) : NULL;
-    if (!font)
+    if (!font || !ptr_ok(font, 0x12 + CJK_INDEX * 8 + 8))
         return;
     h = *(short *)(font + 8);
     ave = *(short *)(font + 0xa);
@@ -576,6 +709,10 @@ static void install_inline_hooks(void) {
     g_mod = (BYTE *)GetModuleHandleA(NULL);
     if (!g_mod)
         return;
+    /* Confirm → 3D reset: a leftover CJK flag made the D3D hook GetDC the
+       backbuffer during load and crash. Overlay text stays English. */
+    log_line("inline hooks off (confirm-safe)");
+    return;
     decode = g_mod + RVA_DECODE;
     d3d = g_mod + RVA_D3DGLYPH;
     if (decode[0] != 0x56 || d3d[0] != 0x53) {
@@ -721,7 +858,9 @@ BOOL APIENTRY DllMain(HINSTANCE inst, DWORD reason, LPVOID res) {
     if (reason == DLL_PROCESS_ATTACH) {
         DisableThreadLibraryCalls(inst);
         InitializeCriticalSection(&g_cs);
-        log_line("gdi_zh attached");
+        log_line("gdi_zh attached (no rdata patch)");
+        /* Do not patch exe LOADING * strings: the remaster matches them when
+           Confirm starts a mission. Draw-time lookup_ui already remaps GDI. */
         CloseHandle(CreateThread(NULL, 0, late_hook, NULL, 0, NULL));
     } else if (reason == DLL_PROCESS_DETACH) {
         DeleteCriticalSection(&g_cs);

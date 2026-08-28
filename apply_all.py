@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
-"""Apply the full Chinese patch: UI, briefings, catalogs, overlay DLL, manuals."""
+"""Apply the full Chinese patch: UI, briefings, catalogs, menu PCX, overlay DLL, manuals."""
 from __future__ import print_function
 import os
 import shutil
 import sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+def _here():
+    if getattr(sys, "frozen", False):
+        return getattr(sys, "_MEIPASS", os.path.dirname(sys.executable))
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+HERE = _here()
 sys.path.insert(0, HERE)
 
 import apply_ui
@@ -70,14 +76,16 @@ def main():
     copy_font()
     import apply_ui
     apply_ui.main()
-    import apply_briefing_bodies
-    apply_briefing_bodies.main()
-    import apply_briefing_labels
-    apply_briefing_labels.main()
-    import apply_catalogs_gbk
-    apply_catalogs_gbk.main()
     import apply_finish
     apply_finish.main()
+    import restore_overlay_en
+    restore_overlay_en.main()
+    import paint_pcx
+    paint_pcx.main()
+    import install_acd
+    install_acd.main()
+    import import_acd
+    import_acd.main()
     copy_dll()
     copy_manuals()
     print("apply_all done")

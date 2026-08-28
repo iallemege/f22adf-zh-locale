@@ -1,5 +1,6 @@
 en_backup/
 briefing_cards/
+_pcx_preview/
 __pycache__/
 *.pyc
 .DS_Store
@@ -17,3 +18,4 @@ manuals/flight_manual_zh.md
 build/
 dist/
 *.spec
+acd/*.exe

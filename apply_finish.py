@@ -3,7 +3,7 @@
 from __future__ import print_function
 import os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from apply_ui import GAME, write_gbk, backup_file, decode_src, read_bytes
+from apply_ui import GAME, write_gbk, backup_file, decode_src, read_bytes, restore_lookup_fields, restore_action_text
 
 
 def patch(rel, transform):
@@ -41,7 +41,7 @@ def main():
     def titles_only(t):
         for a, b in titles_en:
             t = t.replace(a, b)
-        return t
+        return restore_action_text(restore_lookup_fields(t))
 
     gdd = os.path.join(GAME, "f22data")
     for fn in os.listdir(gdd):

@@ -3,18 +3,59 @@
 from __future__ import print_function
 import os, re, shutil, sys
 
-LOC = os.path.dirname(os.path.abspath(__file__))
-if getattr(sys, "frozen", False):
-    LOC = os.path.dirname(sys.executable)
-    if os.path.isfile(os.path.join(LOC, "adf.exe")):
-        GAME = LOC
-        LOC = os.path.join(GAME, "locale_zh")
-    else:
-        GAME = os.path.abspath(os.path.join(LOC, ".."))
-else:
-    GAME = os.path.abspath(os.path.join(LOC, ".."))
-GAME = os.environ.get("F22ADF_GAME", GAME)
-BACKUP = os.path.join(LOC, "en_backup")
+_ALIAS_MODULES = (
+    "paint_pcx",
+    "restore_english",
+    "apply_finish",
+    "import_acd",
+    "repair_ui",
+    "apply_briefing_bodies",
+    "apply_briefing_labels",
+    "apply_catalogs_gbk",
+    "render_briefing_cards",
+    "to_utf8_overlay",
+    "apply_all",
+)
+
+
+def bind_game(path):
+    """Point GAME/BACKUP at a folder that contains adf.exe."""
+    global GAME, BACKUP, LOC
+    GAME = os.path.abspath(path)
+    os.environ["F22ADF_GAME"] = GAME
+    LOC = os.path.join(GAME, "locale_zh")
+    os.makedirs(LOC, exist_ok=True)
+    BACKUP = os.path.join(LOC, "en_backup")
+    os.makedirs(BACKUP, exist_ok=True)
+    for name in _ALIAS_MODULES:
+        mod = sys.modules.get(name)
+        if not mod:
+            continue
+        if hasattr(mod, "GAME"):
+            mod.GAME = GAME
+        if hasattr(mod, "BACKUP"):
+            mod.BACKUP = BACKUP
+
+
+def _boot_paths():
+    here = os.path.dirname(os.path.abspath(__file__))
+    if getattr(sys, "frozen", False):
+        here = os.path.dirname(sys.executable)
+    env = os.environ.get("F22ADF_GAME")
+    if env and os.path.isfile(os.path.join(env, "adf.exe")):
+        bind_game(env)
+        return
+    for cand in (here, os.path.dirname(here)):
+        if os.path.isfile(os.path.join(cand, "adf.exe")):
+            bind_game(cand)
+            return
+    fallback = os.path.dirname(sys.executable) if getattr(sys, "frozen", False) else os.path.abspath(
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    )
+    bind_game(fallback)
+
+
+_boot_paths()
 
 # Longest-first replacements for quoted UI strings (TEXT / TITLE / TOOLTIP TEXT / FEATURE / LEVEL)
 UI = [
@@ -225,8 +266,6 @@ UI = [
     ("Events", "事件"),
     ("Goals", "目标"),
     ("Stats", "统计"),
-    ("Accept", "接受"),
-    ("Cancel", "取消"),
     ("Target:", "目标："),
     ("Target", "目标"),
     ("Targets", "目标"),
@@ -285,7 +324,6 @@ UI = [
     ("Spd", "速度"),
     ("Pos", "位置"),
     ("Alt", "高度"),
-    ("OK", "确定"),
 ]
 
 # icondesc uses bitmap font; keep English. Catalog / HINTTEXT below.
@@ -293,6 +331,7 @@ UI = [
 CATALOG = {
     # simultor.txt
     "Free Flight": "自由飞行",
+    "GTT Air Combat Scenario": "空战设计（ACD）",
     "Flight Training": "飞行训练",
     "Weapons Training": "武器训练",
     "Air-to-Air Tactics": "空战战术",
@@ -648,6 +687,60 @@ def quoted_replace(text, pairs):
     return text
 
 
+# WINDOW-level TEXT / TITLE are remaster lookup keys (Confirm → Brief/Simulator).
+# Only the header before the first GADGET; gadget labels stay Chinese.
+WINDOW_LOOKUP = [
+    ("模拟训练", "Simulator"),
+    ("制作人员", "Credits"),
+    ("多人游戏", "MultiPlay"),
+    ("选项", "Options"),
+    ("快速作战讲评", "Quick Combat De-Briefing"),
+    ("多人讲评", "MultiPlay Debrief"),
+    ("新建对局", "NewGame"),
+    ("高分", "High Score"),
+    ("讲评", "Debrief"),
+    ("简报", "Brief"),
+    ("战区巡航", "Tour of Duty"),
+    ("快速作战", "Quick Combat"),
+]
+
+
+def restore_lookup_fields(text):
+    m = re.search(r"(?i)\n[ \t]*GADGET\s", text)
+    if not m:
+        head, tail = text, ""
+    else:
+        head, tail = text[: m.start() + 1], text[m.start() + 1 :]
+    for zh, en in WINDOW_LOOKUP:
+        head = head.replace('TEXT "' + zh + '"', 'TEXT "' + en + '"')
+        head = head.replace('TITLE "' + zh + '"', 'TITLE "' + en + '"')
+        head = head.replace('HELP_PAGE "' + zh + '"', 'HELP_PAGE "' + en + '"')
+    return head + tail
+
+
+# Gadget OK/Cancel/Accept are remaster action keys (Confirm / start mission).
+# Draw Chinese at GDI time via DINPUT8 lookup_ui.
+ACTION_LOOKUP = [
+    ("确定", "OK"),
+    ("取消", "Cancel"),
+    ("接受", "Accept"),
+    ("自由飞行", "Free Flight"),
+    ("飞行训练", "Flight"),
+    ("武器训练", "Weapons"),
+    ("战斗战术", "Combat Tactics"),
+    ("战斗机动", "Combat Manouvres"),
+    ("预警机", "AWACS"),
+    ("训练任务", "Training Missions"),
+    ("训练大纲", "Training Program"),
+]
+
+
+def restore_action_text(text):
+    for zh, en in ACTION_LOOKUP:
+        text = text.replace('TEXT "' + zh + '"', 'TEXT "' + en + '"')
+    return text
+
+
 def apply_file(rel, transform, writer=None):
     path = os.path.join(GAME, rel)
     if not os.path.isfile(path):
@@ -694,7 +787,10 @@ def main():
     gdd_dir = os.path.join("f22data")
     for fn in os.listdir(os.path.join(GAME, gdd_dir)):
         if fn.lower().endswith((".gdd", ".win")) and fn.lower() != "windesc.win":
-            apply_file(os.path.join("f22data", fn), lambda t, p=UI: quoted_replace(t, p))
+            apply_file(
+                os.path.join("f22data", fn),
+                lambda t, p=UI: restore_action_text(restore_lookup_fields(quoted_replace(t, p))),
+            )
 
     # options.cfg FEATURE names are engine lookup keys (e.g. COCKPIT REFLECTIONS). Do not translate.
 
@@ -713,6 +809,13 @@ def main():
         return t
 
     apply_file(os.path.join("briefing", "credits1.txt"), credits, writer=write_utf8)
+
+    bak_menu = os.path.join(BACKUP, "f22data", "adfmenu.txt")
+    dst_menu = os.path.join(GAME, "f22data", "adfmenu.txt")
+    if os.path.isfile(bak_menu):
+        backup_file(os.path.join("f22data", "adfmenu.txt"))
+        shutil.copy2(bak_menu, dst_menu)
+        print("adfmenu.txt English TEXT (labels via DINPUT8)")
     print("UI apply done")
 
 

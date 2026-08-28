@@ -1,36 +1,40 @@
-F-22 ADF 简体中文本地化说明
-适用于 Steam 2026 版（app 3146140）。游戏目录：本文件夹的上一级。
+F-22 ADF 简体中文安装说明
+适用于 Steam 2026 版（app 3146140）。
 
-已汉化（可正常显示）
-- 界面 GDD：选项、训练/巡航/快速作战/多人/ACMI/预警机/讲评的按钮、标题、悬停提示
-- 座舱 HINTTEXT（huddle\f22.ins）
-- 界面字体：WINFONTS\zh_ui.ttf + DEFINE_SYS_FONT STYLE "SimHei"
+只要这一个程序
+双击 F22ADF_zh_setup.exe（也可先放到游戏目录）。
+选中带 adf.exe 的文件夹，点「安装全部」。
+不需要安装 Python，也不要再单独跑 .py 脚本。
 
-闪退：点开始任务就退出时，换加固版 DINPUT8.dll（或跑 F22ADF_zh_setup.exe）。窗口 TITLE 须保持英文 Brief/Simulator。
+安装器会写入
+- 界面按钮 / 选项 / 悬停提示中文（GDI + 黑体）
+- 主菜单标签、加载条、backdrop 副标题「空中霸权战机」
+- 游戏根目录 DINPUT8.dll（画字替换；不再改 exe 里的 LOADING 字符串）
+- 中文飞行手册与按键对照 PDF
+- 空战设计器（ADD_ONS\ADF_ACD.exe 与「空战设计器.bat」）
 
-GDI 包装（简报/任务名中文）
-游戏根目录的 DINPUT8.dll 是 DirectInput 代理：拦 GBK 解码（含 C2/C3 与西欧 UTF-8 冲突的字），按两格宽度把汉字贴进 2026 版覆盖层。
-简报正文与任务目录已写成 GBK。启动后游戏目录应出现 gdi_zh.log。
-关掉包装：删掉游戏根目录的 DINPUT8.dll。
-完整中文简报图片仍在 locale_zh\briefing_cards\index.html。
-左侧任务缩略图底部烧了中文标题（原图在 en_backup\pcx\）。
-exe 里写死的英文（如 MISSION OBJECTIVES）不会变。
+简报正文和任务目录保持英文。重制层用 8 位 walker 画这层字，挂钩会在点「确定」进任务时闪退。完整中文简报见 locale_zh\briefing_cards\。
 
-其它未汉化
-- 主菜单（字画在 PCX 上）
+之后从 Steam 启动游戏。根目录 gdi_zh.log 应有 inline hooks off (confirm-safe)。
+
+卸载
+同一安装器点「卸载汉化」（需要 locale_zh\en_backup）。
+或删掉游戏根目录的 DINPUT8.dll，只关掉画字替换。
+
+空战设计器
+1. 运行「空战设计器.bat」，Generate + Save。
+2. 再开安装器点「导入ACD」，或运行「导入ACD任务.bat」。
+3. Steam → 模拟训练 → 自由飞行 →「空战设计（ACD）」。
+ACD 本身不需要 Steam。2026 重制版 adf.exe 仍须从 Steam（或 Steam 离线模式）启动。
+
+不要改
+- 窗口 TITLE、窗口级 TEXT、HELP_PAGE（Brief / Simulator / OK / Cancel 等）
+- options.cfg 的 FEATURE 名称
+- WINDOW "..."、LITERAL、gadget ID
+- 简报 / 任务目录不要再写成 GBK 汉字
+
+仍是英文
+- 简报正文、任务列表名（引擎限制，译了会闪退）
 - icondesc.txt 点阵按钮 BRIEFING / OK
-- 机内字幕与语音（在 adf.exe / 语音包里）
-- 帮助 CHM（PDF 与按键对照已另出中文译本，见 manuals\ 与游戏根目录）
-- options.cfg 的 FEATURE 名称（查找键，译了会启动报错）
-
-字体
-CREATE_SYS_FONT 最多 3 行。正确为：
-  CREATE_SYS_FONT "winfonts\zh_ui.ttf"
-  CREATE_SYS_FONT "winfonts\zh_ui.ttf"
-  CREATE_SYS_FONT "winfonts\UAV-OSD-Sans-Mono.ttf"
-  DEFINE_SYS_FONT ... STYLE "SimHei"
-
-还原全部英文
-  python restore_english.py
-只还原简报/目录为英文（保留界面中文）
-  python restore_overlay_en.py
+- exe 里写死的句子（如 MISSION OBJECTIVES）
+- 机内字幕与语音、帮助 CHM

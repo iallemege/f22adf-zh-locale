@@ -1,0 +1,127 @@
+Air Combat Designer v1.0 TM
+                 for F-22:Air Dominance Fighter 
+
+
+                                            Click on the image below to download now!
+
+                                                          Click here for a screen
+                                                          shot!
+
+                                                          AIR COMBAT
+                                                          DESIGNER (ACD):
+                                                          WHAT IS IT?
+
+                                                          How long can you survive
+                                                          with 5 Su-27's on your tail?
+                                                          Can you go head- to-head
+                                                          against a pair of F22's using
+                                                          guns only? Do you want to
+                                                          fly a quick air combat
+                 mission and want it to be a surprise? Well then 'Air Combat Designer' is for you.
+                 'Air Combat DesignerTM' by Game Tool Technologies is an add-on utility for
+                 DID's great flight simulation F22:Air Dominance Fighter. Within minutes you can
+                 be designing, flying and fighting air combat scenarios
+                 where no one really knows what you'll be up against
+                 until you fly it. You can tweak certain mission variables
+                 to your liking or choose to have a totally unknown
+                 air-to-air challenge. No matter how you want to create
+                 your missions - no two missions will EVER be the
+                 same!
+
+
+                 Installation:
+
+                 Since F22:ADF does not have official mission file save/retrieve
+                 functionality, to be able to fly custom missions from within the sim
+                 you must install Air Combat DesignerTM as follows:
+
+                  Create a directory named 'ADD_ONS' under the
+                 ...DID\F22ADF\PROGRAM directory. When you do this your
+                 directory structure should look as follows:
+                 ...DID\F22ADF\PROGRAM\ADD_ONS\
+
+                  Run the install program (ADF_ACD10.EXE) and instruct it to unzip ACD into
+                 the newly created ADD_ONS directory.
+
+                  You are ready to generate save and fly dynamic air-to-air combat missions from
+                 within F22:ADF.
+
+                 Please Note: Once you have generated and saved a mission, you must start
+                 F22:ADF. To run the mission from within F22:ADF, select the Simulation menu
+                 option from its main menu. Click on the 'Free Flight' interface button and you will
+                 see that the first mission will have been changed to 'GTT Air Combat Scenario'.
+                 Click on this and fly it.
+
+                 You can run ACD and F22:ADF at the same time. By alt-tabbing between the
+                 two programs you can generate a scenario, switch to ADF and fly it, generate
+                 another scenario, fly it, etc, etc, etc...
+
+                 HOW TO USE ACD
+
+                 Using the Run option from your Windows 9x Start button, select the
+                 ADF_ACD.EXE in the add_ons directory and click Open. This will start ACD.
+                 You are now able to generate an air combat mission.
+
+                 GLOBAL SETTINGS SECTION
+
+                 This is the section where you define the parameters for generating your air combat
+                 senarios. You have control over:
+
+                      Number of Flights: - determine exactly how many flights will be in your
+                      mission. Or check the random box to let ACD decide for you. The
+                      minimum is 1 (Player only) and the maximum is 50. 
+                      Percent Enemy: -determine exactly how many enemy vs. friendly flights are
+                      created. Check the Random box to let ACD decide for you. 
+                      Payload: - determine if planes will have guns & missiles or just guns only.
+                      Check the Random box and each flight's payload will be decided by ACD. 
+                      Proximity Factor: - this setting determines how closely packed the initial
+                      starting point of all flights are. A factor of 1 starts all planes off basically
+                      within visual range. A factor of 10 will generate flights that could be
+                      hundreds of miles apart. 
+                      Generate Scenario: - click on this button when you are finished deciding on
+                      your parameters. This will generate a secific set of flights that can be further
+                      tweaked or immediately saved to a mission. Flights have random waypoints
+                      generated around the map. No two starting locations will be the same so
+                      you'll get a good tour of the region by generating different missions. Mission
+                      start times are also randomly chosen providing you with a variety of light
+                      conditions during the day and night. 
+
+                 EDIT FLIGHTS SECTION
+
+                 In this section you can edit the flights that have been created to suit your specific
+                 needs before you save it.
+
+                      Flight Number: - selects and displays a specific flight for editing. The
+                      following items can be edited: 
+                      Plane Type: - select an, F22, an Su-27 or any of 25 different planes. 
+                      Size: - edit the number of planes that will be in the flight. Give yourself up to
+                      3 wingmen... or go solo! N
+                      ationality: - determine the flight's nationality - USA or Russian. The Player's
+                      flight s always USA. 
+                      Payload: - edit the payload option for Guns Only or Guns & Missiles. 
+                      Save Scenario: - click this button to save the mission to a file before flying. 
+
+                 Once you have generated and saved a mission, fire up F22:ADF and select the
+                 Simulation menu option from its main menu. Click on the the 'Free Flight' interface
+                 button and you will see that the first mission will have been changed to 'GTT Air
+                 Combat Scenario'. Click on this to fly your ACD mission.
+
+                 TIPS & HINTS
+
+                 Currently ACD is only able to generate one mission at a time. We are working on
+                 the ability to be able to generate and save multiple user-named missons. Using the
+                 next tip below will help for now.
+
+                 You can run ACD and F22:ADF at the same time. By alt-tabbing between the
+                 two programs you can generate a scenario, switch to ADF and fly it, generate
+                 another scenario, fly it, etc, etc, etc...
+
+                 If you ever wish to restore F22:ADF back to its original state, simply rename the
+                 'ADD_ONS' directory to a different name, for example 'ADD_ON$'. By
+                 switching back and forth between naming the directory 'ADD_ONS' and
+                 something else, you can activate custom missions at will.
+
+                 You may also choose a plane other than an F22 for the Player's flight, but the
+                 word is that it just changes the shape and not the actual flight model. You will also
+                 not have a virtual cockpit when flying non-F22 planes.
+

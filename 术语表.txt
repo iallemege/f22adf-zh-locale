@@ -37,6 +37,7 @@ Vis-Ident    目视识别
 Eyeball/Shooter 目视识别与射击手
 Tour of Duty 战区巡航
 Quick Combat 快速作战
+Air Dominance Fighter 空中霸权战机（主菜单 / 制作人员 PCX 副标题）
 time warp    时间跳跃 / 时间加速（按界面上下文）
 
 飞机与传感器（界面）

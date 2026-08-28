@@ -3,20 +3,21 @@
 from __future__ import print_function
 import os, shutil
 
-GAME = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BACKUP = os.path.join(os.path.dirname(os.path.abspath(__file__)), "en_backup")
+import apply_ui
 
 
 def main():
-    if not os.path.isdir(BACKUP):
-        print("backup missing:", BACKUP)
+    game = apply_ui.GAME
+    backup = apply_ui.BACKUP
+    if not os.path.isdir(backup):
+        print("backup missing:", backup)
         return
     n = 0
-    for dirpath, _, files in os.walk(BACKUP):
+    for dirpath, _, files in os.walk(backup):
         for fn in files:
             src = os.path.join(dirpath, fn)
-            rel = os.path.relpath(src, BACKUP)
-            dst = os.path.join(GAME, rel)
+            rel = os.path.relpath(src, backup)
+            dst = os.path.join(game, rel)
             os.makedirs(os.path.dirname(dst), exist_ok=True)
             shutil.copy2(src, dst)
             n += 1
