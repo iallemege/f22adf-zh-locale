@@ -6,6 +6,8 @@ F-22 ADF 简体中文本地化说明
 - 座舱 HINTTEXT（huddle\f22.ins）
 - 界面字体：WINFONTS\zh_ui.ttf + DEFINE_SYS_FONT STYLE "SimHei"
 
+闪退：点开始任务就退出时，换加固版 DINPUT8.dll（或跑 F22ADF_zh_setup.exe）。窗口 TITLE 须保持英文 Brief/Simulator。
+
 GDI 包装（简报/任务名中文）
 游戏根目录的 DINPUT8.dll 是 DirectInput 代理：拦 GBK 解码（含 C2/C3 与西欧 UTF-8 冲突的字），按两格宽度把汉字贴进 2026 版覆盖层。
 简报正文与任务目录已写成 GBK。启动后游戏目录应出现 gdi_zh.log。
