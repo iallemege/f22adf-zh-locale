@@ -84,6 +84,8 @@ def main():
     paint_pcx.main()
     import install_acd
     install_acd.main()
+    import install_tools
+    install_tools.main()
     import import_acd
     import_acd.main()
     copy_dll()

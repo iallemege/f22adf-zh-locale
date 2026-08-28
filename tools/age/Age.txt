@@ -1,0 +1,150 @@
+AGE 2.14 with F22 Total Air War.
+
+-----------------------------------------------------------------
+
+AGE has been designed for use with F22 Air Dominance Fighter and
+so some of the folders and files it creates are for use with ADF.
+
+Specifically these are:
+
+ADD_ONS (folder)
+
+Simulator.txt (file in ADD_ONS)
+
+-----------------------------------------------------------------
+
+Unless you want to pay $20 for an application from Game Tool
+Technologies (see LINKS), create these files and directories:
+
+T (folder)
+
+T (file) - this should be created in notepad and then saved as T.
+  (Not T.txt or anything else - just T)
+
+In this T file (when opened in notepad) the following should be
+entered:
+
+TAW_LOCK 166
+NUM_MISS_TYPES 6
+NUM_BMPS 44
+FADE_COLOURS 13 255
+DEF_BMP 0  0 0   312 115 "\pcx\scenario\sim\SIM1.pcx"
+DEF_BMP 1  0 0   312 115 "\pcx\scenario\sim\SIM2.pcx"
+DEF_BMP 2  0 0   312 115 "\pcx\scenario\sim\SIM3.pcx"
+DEF_BMP 3  0 0   312 115 "\pcx\scenario\sim\SIM4.pcx"
+DEF_BMP 4  0 0   312 115 "\pcx\scenario\sim\SIM30.pcx"
+DEF_BMP 5  0 0   312 115 "\pcx\scenario\sim\SIM5.pcx"
+DEF_BMP 6  0 0   312 115 "\pcx\scenario\sim\SIM6a.pcx"
+DEF_BMP 7  0 0   312 115 "\pcx\scenario\sim\SIM7a.pcx"
+DEF_BMP 8  0 0   312 115 "\pcx\scenario\sim\SIM8a.pcx"
+DEF_BMP 9  0 0   312 115 "\pcx\scenario\sim\SIM6engf.pcx"
+DEF_BMP 10 0 0   312 115 "\pcx\scenario\sim\SIM7hydf.pcx"
+DEF_BMP 11 0 0   312 115 "\pcx\scenario\sim\SIM7elcf.pcx"
+DEF_BMP 12 0 0   312 115 "\pcx\scenario\sim\SIM10a.pcx"
+DEF_BMP 13 0 0   312 115 "\pcx\scenario\sim\SIM10b.pcx"
+DEF_BMP 14 0 0   312 115 "\pcx\scenario\sim\SIM11a.pcx"
+DEF_BMP 15 0 0   312 115 "\pcx\scenario\sim\SIM11b.pcx"
+DEF_BMP 16 0 0   312 115 "\pcx\scenario\sim\SIM12a.pcx"
+DEF_BMP 17 0 0   312 115 "\pcx\scenario\sim\SIM12b.pcx"
+DEF_BMP 18 0 0   312 115 "\pcx\scenario\sim\SIM13a.pcx"
+DEF_BMP 19 0 0   312 115 "\pcx\scenario\sim\SIM13b.pcx"
+DEF_BMP 20 0 0   312 115 "\pcx\scenario\sim\SIM13c.pcx"
+DEF_BMP 21 0 0   312 115 "\pcx\scenario\sim\SIM14a.pcx"
+DEF_BMP 22 0 0   312 115 "\pcx\scenario\sim\SIM14b.pcx"
+DEF_BMP 23 0 0   312 115 "\pcx\scenario\sim\SIM14c.pcx"
+DEF_BMP 24 0 0   312 115 "\pcx\scenario\sim\SIM14cj.pcx"
+DEF_BMP 25 0 0   312 115 "\pcx\scenario\sim\SIM15a.pcx"
+DEF_BMP 26 0 0   312 115 "\pcx\scenario\sim\SIM15b.pcx"
+DEF_BMP 27 0 0   312 115 "\pcx\scenario\sim\SIM16a.pcx"
+DEF_BMP 28 0 0   312 115 "\pcx\scenario\sim\SIM16b.pcx"
+DEF_BMP 29 0 0   312 115 "\pcx\scenario\sim\SIM16c.pcx"
+DEF_BMP 30 0 0   312 115 "\pcx\scenario\sim\SIM17a.pcx"
+DEF_BMP 31 0 0   312 115 "\pcx\scenario\sim\SIM17b.pcx"
+DEF_BMP 32 0 0   312 115 "\pcx\scenario\sim\SIM31.pcx"
+DEF_BMP 33 0 0   312 115 "\pcx\scenario\sim\SIM32.pcx"
+DEF_BMP 34 0 0   312 115 "\pcx\scenario\sim\SIM22.pcx"
+DEF_BMP 35 0 0   312 115 "\pcx\scenario\sim\SIM24a.pcx"
+DEF_BMP 36 0 0   312 115 "\pcx\scenario\sim\SIM25.pcx"
+DEF_BMP 37 0 0   312 115 "\pcx\scenario\sim\SIM34.pcx"
+DEF_BMP 38 0 0   312 115 "\pcx\scenario\sim\SIM24b.pcx"
+DEF_BMP 39 0 0   312 115 "\pcx\scenario\sim\SIM26.pcx"
+DEF_BMP 40 0 0   312 115 "\pcx\scenario\sim\SIM27.pcx"
+DEF_BMP 41 0 0   312 115 "\pcx\scenario\sim\SIM28a.pcx"
+DEF_BMP 42 0 0   312 115 "\pcx\scenario\sim\SIM28b.pcx"
+DEF_BMP 43 0 0   312 115 "\pcx\scenario\sim\SIM35.pcx"
+MISS_TYPE 1 "Free Flight" 6 0
+MISS 0 "Ar Rub al Khali" "SIM1.pdl" "sim1" 0	USE_BITMAP 0
+MISS 1 "Harrat al Kishb" "SIM2.pdl" "SIM2" 1	USE_BITMAP 1
+MISS 2 "Nile" "SIM3.pdl" "SIM3"	2 USE_BITMAP 2
+MISS 3 "Khartoum To Lake Tana" "SIM4.pdl" "SIM4"	3 USE_BITMAP 3
+MISS 4 "Ethiopia" "SIM30.pdl" "SIM30" 4 USE_BITMAP 4
+MISS 5 "Red Sea Gate" "sim5.pdl" "sim5" 5 USE_BITMAP 5
+MISS_TYPE 0 "Flight Training" 6 0
+MISS 0 "Take-Off" "SIM6A.pdl" "SIM6A" 6 USE_BITMAP 6
+MISS 1 "Landing" "SIM7A.pdl" "SIM7A"	7 USE_BITMAP 7
+MISS 2 "Refueling" "SIM8A.pdl" "SIM8A" 8 USE_BITMAP 8
+MISS 3 "Engine Failure" "SIM6ENGF.pdl" "SIM6ENGF" 9 USE_BITMAP 9
+MISS 4 "Hydraulic Failure" "SIM7HYDF.pdl" "SIM7HYDF" 10 USE_BITMAP 10
+MISS 5 "Electrical Failure" "SIM7ELCF.pdl" "SIM7ELCF" 11	USE_BITMAP 11
+MISS_TYPE 2 "Weapons Training" 11 0
+MISS 0 "BVR AMRAAM" "SIM10A.pdl" "SIM10A" 12 USE_BITMAP 12
+MISS 1 "Dogfight Sidewinder" "SIM10B.pdl" "SIM10B" 13 USE_BITMAP 13
+MISS 2 "Maverick Mobile Attack" "SIM11A.pdl" "SIM11A" 14 USE_BITMAP 14
+MISS 3 "Cannon Strafe CAS" "SIM11B.pdl" "SIM11B" 15 USE_BITMAP 15
+MISS 4 "Harpoon Ship Kill" "SIM12A.pdl" "SIM12A" 16 USE_BITMAP 16
+MISS 5 "Rocket Attack" "SIM12B.pdl" "SIM12B" 17 USE_BITMAP 17
+MISS 6 "Bomb BAI" "SIM13A.pdl" "SIM13A" 18 USE_BITMAP 18
+MISS 7 "Cluster CAS" "SIM13C.pdl" "SIM13C" 20 USE_BITMAP 20
+MISS 8 "HARM SEAD" "SIM14A.pdl" "SIM14A" 21 USE_BITMAP 21
+MISS 9 "JDAM Interdiction" "SIM14B.pdl" "SIM14B" 22 USE_BITMAP 22
+MISS 10 "LGB Airfield" "SIM14C.pdl" "SIM14C" 23 USE_BITMAP 23
+MISS_TYPE 5 "Dogfighting Skills" 9 0
+USE_PALETTE "\iff\256\gui\brushed3.iff"
+TEXT_COLOUR 1 1
+MISS 0 "One on One MiG-31" "dog1.pdl" "dog1" 25 USE_BITMAP 25
+MISS 1 "One on One MiG-29M" "dog2.pdl" "dog2" 26 USE_BITMAP 26
+MISS 2 "One on One F-18E" "dog3.pdl" "dog3" 27 USE_BITMAP 27
+MISS 3 "One on One F22" "dog4.pdl" "dog4" 28 USE_BITMAP 28
+MISS 4 "One on Two MiG-29M" "dog5.pdl" "dog5" 29 USE_BITMAP 29
+MISS 5 "One on Two F22" "dog6.pdl" "dog6" 30 USE_BITMAP 30
+MISS 6 "Two on Two EF2000" "dog7.pdl" "dog7" 31 USE_BITMAP 31
+MISS 7 "Four on Four Su-27" "dog8.pdl" "dog8" 32 USE_BITMAP 32
+MISS 8 "Four on Four F22" "dog9.pdl" "dog9" 33 USE_BITMAP 25
+MISS_TYPE 4 "Wingmen" 4 0
+MISS 0 "Pickle" "SIM34.pdl" "SIM34" 37 USE_BITMAP 37
+MISS 1 "Engage My Target" "SIM22.pdl" "SIM22" 34 USE_BITMAP 34
+MISS 2 "Engage Bandits" "SIM24A.pdl" "SIM24A" 35 USE_BITMAP 35
+MISS 3 "Engage Hostiles" "SIM25.pdl" "SIM25" 36 USE_BITMAP 36
+MISS_TYPE 3 "AWACS Missions" 4 0
+MISS 0 "CAP Intercept" "SIM24B.pdl" "SIM24B" 76 USE_BITMAP 38
+MISS 1 "Vis-Ident" "SIM26.pdl" "SIM26" 77 USE_BITMAP 39
+MISS 2 "Refuel Strike" "SIM27.pdl" "SIM27" 78 USE_BITMAP 40
+MISS 3 "Covert Mission" "SIM35.pdl" "SIM35" 81 USE_BITMAP 43
+
+---------------------------------------------------------------------
+
+This is the information needed by TAW to find missions in the simulator.
+
+To add a mission put in the place of any of the listed missions (lines beginning with MISS):
+
+MISS 0 "Mission name here" "filename of PDL file here" "Breifing name without txt extension" USE_BITMAP 25
+
+Above, where it says something like:
+
+MISS_TYPE 4 "Wingmen" 4 0
+
+change the 4 after "wingmen" or other to the number of missions you are adding.
+
+Eg MISS_TYPE 1 "Viper's Tour 8 0 - this tells TAW that their are 8 missions.
+
+
+
+
+
+
+If you need any further help either look at the T file from some of my TAW missions or mail me.
+
+
+NOTE: YOU CANNOT USE AME TO MANAGE THE MISSONS. THE FILES MUST BE PLACED IN THE FOLDERS MANUALLY
+
+

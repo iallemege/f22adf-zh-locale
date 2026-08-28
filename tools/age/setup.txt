@@ -1,0 +1,59 @@
+**Setup and help text file for ADF Gui Editor and ADF Mission Editor**
+
+In order to effectively use these 2 products, specific subdirectories must exist under you F22 ADF program directory.
+This text file will assist you in setting up AME and AGE's directory path's settings.
+
+Copy the contents of this files set to any directory/folder of your choice, but it is recommended that you create a sub directory/folder named AGE under the F22ADF Program folder.
+
+After installing these files, you will need to set several directory paths in both programs.
+
+------------------For AME (ADF Mission Editor)-----------------
+
+Start the program.
+Right click on the program screen and select "settings"
+Edit the 2 directory path options:
+
+1. Location of game = the path to the F22ADF program file. By default this is;
+C:\Program Files\DiD\F22ADF\Program
+...your settings may be different depending on your installation.
+
+2. Location of Scripts = the path to the directory of your choice where you will store missions made with any add on mission creator. I recommend a path such as I use which is;
+C:\Program Files\DiD\F22ADF\Program\Add on missions\
+
+At this time you can select "OK" and close the program or continue with other optional settings...please read the Windows help files included with AME
+
+A nice feature of this utility, and the main reason it is bundled with AGE, is the on/off activate/deactivate checkmark button, which activates or deactivates the add on missions you have loaded in ADF. This feature provides a very convenient method of switching between the default game scenarios or selecting add on missions to play such as those you've exported to the game with AGE...1 mouse click and you switch back and forth so you can easily fly F22ADF's original default Free Flight missions, or run that new custom mission you've just made!
+
+-------------------For AGE (ADF Gui Editor)--------------------
+
+Start the program.
+goto 'Options'/'Settings'
+Edit the 3 directory path options:
+
+1. Default Script folder = the path to the AGE program file. If you have installed AGE to it's own directory under the F22ADF program folder, then browse to that folder.
+
+2. Default Mission file folder = the path to the directory of your choice where you will store missions made with any add on mission creator. I recommend a path such as I use which is;
+C:\Program Files\DiD\F22ADF\Program\Add on missions\
+
+3. Game folder = the path to the F22ADF program file. By default this is;
+C:\Program Files\DiD\F22ADF\Program
+...your settings may be different depending on your installation.
+
+At this time you can select "OK" and close the program or continue with other optional settings...please read the Windows help files included with AGE
+
+I have a picture file (ADFtree.jpg) on my site of my directory tree and how these programs should be installed...please feel free to reference this file on my site for installation trouble shooting questions.
+
+AGE may prompt you to create neccessary sub directories when you first try to export missions made with it. You should allow this to be done. However, if your F22ADF installation is not default, you may encounter problems...check your AGE and AME directory path settings to ensure they are in compliance with your game installation.
+
+
+
+Bimo and I thank you for considering or purchasing our program and wish you many long fullfilling moments in front of your PC's creating F22ADF missions with the high detail and diverse complexity that ADF Gui Editor can offer you. Please feel free to report any bugz you may find and check back often to my site for new upgrades to AGE as we already have an overloaded worklist of features we plan to add to AGE...some of which are features allowing you to create multiplayer files and missions, the merging of AME into AGE, support of a new dynamic campaign generator for F22ADF soon to be released, support of special TAW features, other automated install, export and import features, and many tweaks and pluses...
+
+Many thanks to Digital Image Design for producing the finest combat simulations in the industry...IMO ;o)
+
+WarDogz out...
+
+WarDogz
+Independent Mercenary Corps
+"We Prey for Pay"
+http://www.WarDogz.com

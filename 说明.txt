@@ -11,7 +11,8 @@ F-22 ADF 简体中文安装说明
 - 主菜单标签、加载条、backdrop 副标题「空中霸权战机」
 - 游戏根目录 DINPUT8.dll（画字替换；不再改 exe 里的 LOADING 字符串）
 - 中文飞行手册与按键对照 PDF
-- 空战设计器（ADD_ONS\ADF_ACD.exe 与「空战设计器.bat」）
+- 空战设计器、界面编辑器 AGE、BAM 任务管理、TrackIR 2009 包（TAW 用，不覆盖重制版）
+- 作弊说明.txt（座舱 Alt+DIDIT）
 
 简报正文和任务目录保持英文。重制层用 8 位 walker 画这层字，挂钩会在点「确定」进任务时闪退。完整中文简报见 locale_zh\briefing_cards\。
 
@@ -21,11 +22,19 @@ F-22 ADF 简体中文安装说明
 同一安装器点「卸载汉化」（需要 locale_zh\en_backup）。
 或删掉游戏根目录的 DINPUT8.dll，只关掉画字替换。
 
-空战设计器
-1. 运行「空战设计器.bat」，Generate + Save。
-2. 再开安装器点「导入ACD」，或运行「导入ACD任务.bat」。
-3. Steam → 模拟训练 → 自由飞行 →「空战设计（ACD）」。
-ACD 本身不需要 Steam。2026 重制版 adf.exe 仍须从 Steam（或 Steam 离线模式）启动。
+附加工具（均不经过 Steam；游戏本体仍从 Steam 启动）
+- 空战设计器.bat → Generate + Save → 安装器「导入ACD」
+- 界面编辑器.bat → AGE。Settings 里 Game folder 指到本游戏目录
+- BAM任务管理.bat → 附加任务放到 SCRIPTS\\子文件夹后 LOAD / ON
+- ADD_ONS\\TrackIR\\ 是 2009 年 TAW 补丁，不要拷进重制版根目录
+
+AGE / BAM / ACD 若留下 ADD_ONS\\SIMULTOR.TXT，删掉，以免模拟训练列表变回旧英文表。
+
+作弊（游戏内置，先开模式）
+座舱中按住 Alt，依次敲 D I D I T，松开。
+然后：Alt+D 补弹加油（多人不可用）；Shift+I 无敌；Shift+U 悬停；
+Alt+K 时刻+2 小时；Shift+K +1 分钟；Alt+L 隐藏文字；Shift+F11 截图；
+Alt+F10 / Alt+F11 调试菜单。详见游戏目录「作弊说明.txt」。
 
 不要改
 - 窗口 TITLE、窗口级 TEXT、HELP_PAGE（Brief / Simulator / OK / Cancel 等）

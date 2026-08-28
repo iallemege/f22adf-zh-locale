@@ -22,7 +22,7 @@ Steam 2026 版 *F-22: Air Dominance Fighter*（app **3146140**）的简体中文
 
 ## 空战设计器（ACD 1.0）
 
-安装全部之后：`空战设计器.bat` → Generate + Save → 再开安装器点「导入ACD」（或 `导入ACD任务.bat`）。出现在模拟训练 / 自由飞行。
+安装全部之后：`空战设计器.bat` → Generate + Save → 再开安装器点「导入ACD」（或 `导入ACD任务.bat`）。出现在模拟训练 / 自由飞行。同时装上 AGE（`界面编辑器.bat`）、BAM（`BAM任务管理.bat`），以及 `ADD_ONS\TrackIR\`（2009 TAW 补丁，勿覆盖重制版）。座舱作弊：按住 Alt 再敲 D I D I T，见 `作弊说明.txt`。
 
 ## 离线研究包
 
