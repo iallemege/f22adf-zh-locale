@@ -97,16 +97,16 @@ def main():
         bat = (
             "@echo off\r\n"
             "cd /d \"%~dp0\"\r\n"
-            "\"%s\" --import-acd\r\n"
+            "\"" + setup + "\" --import-acd\r\n"
             "pause\r\n"
-        ) % setup
+        )
     else:
         bat = (
             "@echo off\r\n"
             "cd /d \"%~dp0\"\r\n"
-            "python \"%s\" --import-acd\r\n"
+            "python \"" + os.path.join(HERE, "setup_zh.py") + "\" --import-acd\r\n"
             "pause\r\n"
-        ) % os.path.join(HERE, "setup_zh.py")
+        )
     for name in ("导入ACD任务.bat", "import_acd.bat"):
         with open(os.path.join(apply_ui.GAME, name), "wb") as f:
             f.write(bat.encode("ascii", "replace"))
