@@ -3,8 +3,17 @@
 from __future__ import print_function
 import os, re, shutil, sys
 
-GAME = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 LOC = os.path.dirname(os.path.abspath(__file__))
+if getattr(sys, "frozen", False):
+    LOC = os.path.dirname(sys.executable)
+    if os.path.isfile(os.path.join(LOC, "adf.exe")):
+        GAME = LOC
+        LOC = os.path.join(GAME, "locale_zh")
+    else:
+        GAME = os.path.abspath(os.path.join(LOC, ".."))
+else:
+    GAME = os.path.abspath(os.path.join(LOC, ".."))
+GAME = os.environ.get("F22ADF_GAME", GAME)
 BACKUP = os.path.join(LOC, "en_backup")
 
 # Longest-first replacements for quoted UI strings (TEXT / TITLE / TOOLTIP TEXT / FEATURE / LEVEL)
@@ -693,10 +702,10 @@ def main():
         return quoted_replace(t, sorted(CATALOG.items(), key=lambda kv: -len(kv[0])))
 
     for fn in ("simultor.txt", "td_miss.txt", "td_tours.txt", "misssel.txt", "multipla.txt", "arcade.txt"):
-        apply_file(os.path.join("f22data", fn), catalog, writer=write_utf8)
+        apply_file(os.path.join("f22data", fn), catalog, writer=write_gbk)
 
     apply_file(os.path.join("huddle", "f22.ins"), lambda t: quoted_replace(t, HINT))
-    apply_file(os.path.join("f22data", "wptasks.txt"), lambda t: quoted_replace(t, WPTASK), writer=write_utf8)
+    apply_file(os.path.join("f22data", "wptasks.txt"), lambda t: quoted_replace(t, WPTASK), writer=write_gbk)
 
     def credits(t):
         for en, zh in sorted(CREDIT_ROLES, key=lambda kv: -len(kv[0])):

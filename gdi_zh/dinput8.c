@@ -291,6 +291,34 @@ static float g_x, g_y, g_sc;
 static BYTE g_color;
 static int g_cjk_n;
 static BYTE g_bits[128 * 16];
+static volatile LONG g_hooked;
+
+static int ptr_ok(const void *p, SIZE_T n) {
+    MEMORY_BASIC_INFORMATION m;
+    const BYTE *b, *e;
+    if (!p || n == 0)
+        return 0;
+    b = (const BYTE *)p;
+    e = b + n - 1;
+    if (!VirtualQuery(p, &m, sizeof(m)))
+        return 0;
+    if (m.State != MEM_COMMIT)
+        return 0;
+    if (m.Protect & (PAGE_NOACCESS | PAGE_GUARD))
+        return 0;
+    if (e >= (const BYTE *)m.BaseAddress + m.RegionSize) {
+        if (!VirtualQuery(e, &m, sizeof(m)))
+            return 0;
+        if (m.State != MEM_COMMIT || (m.Protect & (PAGE_NOACCESS | PAGE_GUARD)))
+            return 0;
+    }
+    return 1;
+}
+
+static int is_cjk_wc(wchar_t wc) {
+    return (wc >= 0x2E80 && wc <= 0x9FFF) || (wc >= 0xF900 && wc <= 0xFAFF) ||
+           (wc >= 0x3000 && wc <= 0x303F) || (wc >= 0xFF01 && wc <= 0xFF60);
+}
 
 static void *alloc_exec(int n) {
     return VirtualAlloc(NULL, (SIZE_T)n, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
@@ -405,9 +433,11 @@ static int gdi_text_on_surface(void *surf, int x, int y, wchar_t wc, DWORD argb,
     HRESULT hr;
     HFONT hf, oldf;
 
-    if (!surf)
+    if (!surf || !ptr_ok(surf, sizeof(void *)))
         return 0;
     vt = *(void ***)surf;
+    if (!ptr_ok(vt, 17 * sizeof(void *)) || !vt[15] || !vt[16])
+        return 0;
     hdc = NULL;
     hr = ((HRESULT(WINAPI *)(void *, HDC *))vt[15])(surf, &hdc);
     if (hr < 0 || !hdc)
@@ -427,9 +457,11 @@ static int gdi_text_on_surface(void *surf, int x, int y, wchar_t wc, DWORD argb,
 
 static ULONG surf_release(void *surf) {
     void **vt;
-    if (!surf)
+    if (!surf || !ptr_ok(surf, sizeof(void *)))
         return 0;
     vt = *(void ***)surf;
+    if (!ptr_ok(vt, 3 * sizeof(void *)) || !vt[2])
+        return 0;
     return ((ULONG(WINAPI *)(void *))vt[2])(surf);
 }
 
@@ -443,9 +475,9 @@ void draw_cjk_d3d(void) {
     char msg[96];
 
     g_has_cjk = 0;
-    if (!g_mod)
+    if (!g_mod || !ptr_ok(g_mod + RVA_DEVICE, sizeof(void *)))
         return;
-    font = *(BYTE **)(g_mod + RVA_FONT);
+    font = ptr_ok(g_mod + RVA_FONT, sizeof(void *)) ? *(BYTE **)(g_mod + RVA_FONT) : NULL;
     h = font ? *(short *)(font + 8) : 16;
     if (h < 10)
         h = 16;
@@ -460,8 +492,10 @@ void draw_cjk_d3d(void) {
     ok = 0;
     rt = NULL;
     off = NULL;
-    if (dev) {
+    if (dev && ptr_ok(dev, sizeof(void *))) {
         vt = *(void ***)dev;
+        if (!ptr_ok(vt, 39 * sizeof(void *)) || !vt[38])
+            return;
         if (((HRESULT(WINAPI *)(void *, DWORD, void **))vt[38])(dev, 0, &rt) >= 0 && rt)
             ok = gdi_text_on_surface(rt, x, y, g_cjk, argb, h);
         if (!ok && rt) {
@@ -521,9 +555,10 @@ static unsigned char H_decode(char **p) {
         return (unsigned char)(s[1] - 0x80);
     }
 
-    /* GBK before C2/C3: 美/轮/夺 start with C3/C2 and became '?'. */
+    /* GBK before C2/C3: 美/轮/夺 start with C3/C2 and became '?'.
+       Only accept real CJK so high Latin bytes are not eaten (that desyncs the walker). */
     if (is_lead(b) && s[1] && is_trail(s[1])) {
-        if (MultiByteToWideChar(936, 0, (char *)s, 2, &wc, 1) == 1) {
+        if (MultiByteToWideChar(936, 0, (char *)s, 2, &wc, 1) == 1 && is_cjk_wc(wc)) {
             *p = (char *)(s + 2);
             g_cjk = wc;
             g_has_cjk = 1;
@@ -550,8 +585,12 @@ static void install_inline_hooks(void) {
     }
     g_decode_tramp = make_tramp(decode, 6, decode + 6);
 
-    stub = (BYTE *)alloc_exec(32);
+    /* Preserve ebx/esi/edi: TCC and the walker both use them; clobber = crash after CJK. */
+    stub = (BYTE *)alloc_exec(48);
     p = stub;
+    *p++ = 0x53;
+    *p++ = 0x56;
+    *p++ = 0x57;
     *p++ = 0x51;
     *p++ = 0xE8;
     *(DWORD *)p = (DWORD)((BYTE *)H_decode - (p + 4));
@@ -559,11 +598,15 @@ static void install_inline_hooks(void) {
     *p++ = 0x83;
     *p++ = 0xC4;
     *p++ = 0x04;
+    *p++ = 0x5F;
+    *p++ = 0x5E;
+    *p++ = 0x5B;
     *p++ = 0xC3;
     emit_jmp(decode, stub);
 
-    stub = (BYTE *)alloc_exec(64);
+    stub = (BYTE *)alloc_exec(96);
     p = stub;
+    *p++ = 0x60; /* pushad around CJK draw */
     /* movss [g_x], xmm1 */
     *p++ = 0xF3;
     *p++ = 0x0F;
@@ -593,11 +636,13 @@ static void install_inline_hooks(void) {
     p += 4;
     *p++ = 0x00;
     *p++ = 0x74;
-    *p++ = 6;
+    *p++ = 7; /* skip call + popad + ret */
     *p++ = 0xE8;
     *(DWORD *)p = (DWORD)((BYTE *)draw_cjk_d3d - (p + 4));
     p += 4;
+    *p++ = 0x61; /* popad */
     *p++ = 0xC3;
+    *p++ = 0x61; /* popad, then original glyph */
     memcpy(p, d3d, 6);
     p += 6;
     *p++ = 0xE9;
@@ -605,6 +650,14 @@ static void install_inline_hooks(void) {
     emit_jmp(d3d, stub);
 
     log_line("inline decode+d3d glyph hooked");
+}
+
+static void install_hooks(void);
+
+static void install_hooks_once(void) {
+    if (InterlockedCompareExchange(&g_hooked, 1, 0) != 0)
+        return;
+    install_hooks();
 }
 
 static void install_hooks(void) {
@@ -634,8 +687,9 @@ static void install_hooks(void) {
 
 static DWORD WINAPI late_hook(LPVOID p) {
     (void)p;
-    Sleep(50);
-    install_hooks();
+    /* Do not patch .text inside DllMain (loader lock / Steam overlay). */
+    Sleep(200);
+    install_hooks_once();
     return 0;
 }
 
@@ -649,6 +703,7 @@ static HMODULE load_sys_dinput8(void) {
 }
 
 __declspec(dllexport) HRESULT WINAPI DirectInput8Create(HINSTANCE a, DWORD b, const void *c, LPVOID *d, LPVOID e) {
+    install_hooks_once();
     if (!g_DirectInput8Create) {
         if (!g_dinput)
             g_dinput = load_sys_dinput8();
@@ -667,7 +722,6 @@ BOOL APIENTRY DllMain(HINSTANCE inst, DWORD reason, LPVOID res) {
         DisableThreadLibraryCalls(inst);
         InitializeCriticalSection(&g_cs);
         log_line("gdi_zh attached");
-        install_hooks();
         CloseHandle(CreateThread(NULL, 0, late_hook, NULL, 0, NULL));
     } else if (reason == DLL_PROCESS_DETACH) {
         DeleteCriticalSection(&g_cs);

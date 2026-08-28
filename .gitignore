@@ -14,3 +14,6 @@ _*.txt
 manual_src/*.txt
 manual_src/chapters/
 manuals/flight_manual_zh.md
+build/
+dist/
+*.spec

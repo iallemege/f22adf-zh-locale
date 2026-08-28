@@ -27,17 +27,19 @@ def main():
 
     patch(os.path.join("f22data", "td_miss.txt"), td_miss)
 
-    titles = [
-        ('TITLE "Credits"', 'TITLE "制作人员"'),
-        ('TITLE "Simulator"', 'TITLE "模拟训练"'),
-        ('TITLE "Tour of Duty"', 'TITLE "战区巡航"'),
-        ('TITLE "Quick Combat"', 'TITLE "快速作战"'),
-        ('TITLE "Multiplay"', 'TITLE "多人游戏"'),
-        ('TITLE "Brief"', 'TITLE "简报"'),
+    # Keep WINDOW TITLE in English. Some remaster paths look up screens by TITLE
+    # ("Brief", "Simulator") when Confirm starts the mission.
+    titles_en = [
+        ('TITLE "制作人员"', 'TITLE "Credits"'),
+        ('TITLE "模拟训练"', 'TITLE "Simulator"'),
+        ('TITLE "战区巡航"', 'TITLE "Tour of Duty"'),
+        ('TITLE "快速作战"', 'TITLE "Quick Combat"'),
+        ('TITLE "多人游戏"', 'TITLE "Multiplay"'),
+        ('TITLE "简报"', 'TITLE "Brief"'),
     ]
 
     def titles_only(t):
-        for a, b in titles:
+        for a, b in titles_en:
             t = t.replace(a, b)
         return t
 

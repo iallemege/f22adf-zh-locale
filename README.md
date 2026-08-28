@@ -13,8 +13,12 @@ Steam 2026 版 *F-22: Air Dominance Fighter*（app **3146140**）的简体中文
 
 ## 安装
 
-1. 将 `gdi_zh\DINPUT8.dll` 复制到游戏根目录（与 `adf.exe` 同级）。这是 32 位 DirectInput 代理，会把简报覆盖层的 GBK 汉字画出来。
-2. 在 `locale_zh` 下执行：
+**推荐：** 运行 Release 里的 `F22ADF_zh_setup.exe`，选中带 `adf.exe` 的游戏目录，点「安装汉化」。不要把 `options.cfg` 的 FEATURE 名称改成中文。
+
+或手动：
+
+1. 将 `gdi_zh\DINPUT8.dll` 复制到游戏根目录（与 `adf.exe` 同级）。这是 32 位 DirectInput 代理，会把简报覆盖层的 GBK 汉字画出来。点「开始任务」闪退时请换 Release 里加固过的 DLL（延迟 hook、保存 esi/edi、只认汉字 GBK）。
+2. 在 `locale_zh` 下执行 `python apply_all.py`，或分步：
 
 ```text
 python apply_ui.py
